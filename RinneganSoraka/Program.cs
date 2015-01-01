@@ -16,9 +16,9 @@ namespace RinneganSoraka
         public static Orbwalking.Orbwalker Orbwalker;
         public static Obj_AI_Base Player = ObjectManager.Player; // Instead of typing ObjectManager.Player you can just type Player
         public static Spell Q, W, E, R;
-        public static Items.Item DFG;
 
-        public static Menu SF;
+        public static Menu MainMenu;
+
         static void Main(string[] args)
         {
             CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
@@ -28,40 +28,58 @@ namespace RinneganSoraka
         {
             if (Player.BaseSkinName != ChampName) return;
 
-            Q = new Spell(SpellSlot.Q, 0);
-            W = new Spell(SpellSlot.W, 0);
-            E = new Spell(SpellSlot.E, 0);
-            R = new Spell(SpellSlot.R, 0);
+            Utils.PrintMessage("Script loaded!");
+
+            // skins
+            Q = new Spell(SpellSlot.Q, 970);
+            W = new Spell(SpellSlot.W, 450f);
+            E = new Spell(SpellSlot.E, 925f);
+            R = new Spell(SpellSlot.R, float.MaxValue);
+
+            // set skillshot types
+
+
+            // draw menus
+            DrawMenus();
+
+
+            // add callbacks
+            Drawing.OnDraw += Drawing_OnDraw; // Add onDraw
+            Game.OnGameUpdate += Game_OnGameUpdate; // adds OnGameUpdate (Same as onTick in bol)
+        }
+
+        static void DrawMenus()
+        {
             //Base menu
-            SF = new Menu("SF" + ChampName, ChampName, true);
+            MainMenu = new Menu("Rinnegan" + ChampName, "Rinnegan" + ChampName, true);
+
             //Orbwalker and menu
-            SF.AddSubMenu(new Menu("Orbwalker", "Orbwalker"));
-            Orbwalker = new Orbwalking.Orbwalker(SF.SubMenu("Orbwalker"));
+            MainMenu.AddSubMenu(new Menu("Orbwalker", "Orbwalker"));
+            Orbwalker = new Orbwalking.Orbwalker(MainMenu.SubMenu("Orbwalker"));
+
             //Target selector and menu
             var ts = new Menu("Target Selector", "Target Selector");
             SimpleTs.AddToMenu(ts);
-            SF.AddSubMenu(ts);
+            MainMenu.AddSubMenu(ts);
+
             //Combo menu
-            SF.AddSubMenu(new Menu("Combo", "Combo"));
-            SF.SubMenu("Combo").AddItem(new MenuItem("useQ", "Use Q?").SetValue(true));
-            SF.SubMenu("Combo").AddItem(new MenuItem("useW", "Use W?").SetValue(true));
-            SF.SubMenu("Combo").AddItem(new MenuItem("useE", "Use E?").SetValue(true));
-            SF.SubMenu("Combo").AddItem(new MenuItem("useR", "Use R?").SetValue(true));
-            SF.SubMenu("Combo").AddItem(new MenuItem("ComboActive", "Combo").SetValue(new KeyBind(32, KeyBindType.Press)));
+            MainMenu.AddSubMenu(new Menu("Combo", "Combo"));
+            MainMenu.SubMenu("Combo").AddItem(new MenuItem("useQ", "Use Q?").SetValue(true));
+            MainMenu.SubMenu("Combo").AddItem(new MenuItem("useW", "Use W?").SetValue(true));
+            MainMenu.SubMenu("Combo").AddItem(new MenuItem("useE", "Use E?").SetValue(true));
+            MainMenu.SubMenu("Combo").AddItem(new MenuItem("useR", "Use R?").SetValue(true));
+            MainMenu.SubMenu("Combo").AddItem(new MenuItem("ComboActive", "Combo").SetValue(new KeyBind(32, KeyBindType.Press)));
+
             //Exploits
-            SF.AddItem(new MenuItem("NFE", "No-Face Exploit").SetValue(true));
+            MainMenu.AddItem(new MenuItem("Packets", "Use Packet Casting").SetValue(true));
+
             //Make the menu visible
-            SF.AddToMainMenu();
-
-            Drawing.OnDraw += Drawing_OnDraw; // Add onDraw
-            Game.OnGameUpdate += Game_OnGameUpdate; // adds OnGameUpdate (Same as onTick in bol)
-
-            Game.PrintChat("SF" + ChampName + " loaded! By iSnorflake");
+            MainMenu.AddToMainMenu();
         }
 
         static void Game_OnGameUpdate(EventArgs args)
         {
-            if (SF.Item("ComboActive").GetValue<KeyBind>().Active)
+            if (MainMenu.Item("ComboActive").GetValue<KeyBind>().Active)
             {
                 Combo();
             }
@@ -75,26 +93,30 @@ namespace RinneganSoraka
         public static void Combo()
         {
             var target = SimpleTs.GetTarget(Q.Range, SimpleTs.DamageType.Magical);
+
             if (target == null) return;
 
-            if (target.IsValidTarget(DFG.Range) && DFG.IsReady())
-                DFG.Cast(target);
+
+
             if (target.IsValidTarget(Q.Range) && Q.IsReady())
             {
-                Q.Cast(target, SF.Item("NFE").GetValue<bool>());
+                Q.Cast(target, MainMenu.Item("Packets").GetValue<bool>());
 
             }
+
             if (target.IsValidTarget(W.Range) && W.IsReady())
             {
-                W.Cast(target, SF.Item("NFE").GetValue<bool>());
+                W.Cast(target, MainMenu.Item("Packets").GetValue<bool>());
             }
+
             if (target.IsValidTarget(E.Range) && E.IsReady())
             {
-                E.Cast(target, SF.Item("NFE").GetValue<bool>());
+                E.Cast(target, MainMenu.Item("Packets").GetValue<bool>());
             }
+
             if (target.IsValidTarget(R.Range) && R.IsReady())
             {
-                R.Cast(target, SF.Item("NFE").GetValue<bool>());
+                R.Cast(target, MainMenu.Item("Packets").GetValue<bool>());
             }
         }
     }
