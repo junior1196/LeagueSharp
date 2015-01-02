@@ -117,7 +117,7 @@ namespace DSTMotivator
 
         static void Game_OnGameStart(EventArgs args)
         {
-            greetingTime = 30 + rand.Next(60);
+            greetingTime = Game.Time + rand.Next(30, 90);
             gameStarted = true;
         }
 
