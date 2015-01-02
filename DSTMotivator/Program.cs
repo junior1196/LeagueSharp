@@ -12,15 +12,15 @@ namespace DSTMotivator
     class Program
     {
         public static Obj_AI_Base Player = ObjectManager.Player;
-        public static List<string> Messages = null;
-        public static List<string> Starts = null;
-        public static List<string> Endings = null;
-        public static List<string> Smileys = null;
+        public static List<string> Messages;
+        public static List<string> Starts;
+        public static List<string> Endings;
+        public static List<string> Smileys;
+        public static List<string> Greetings;
+        public static Dictionary<GameEventId, int> Rewards;
         public static Random rand = new Random();
 
-        public static bool gameStarted = false;
-        public static bool wroteGreeting = false;
-        public static float greetingTime = 0;
+        public static Menu Settings;
 
         public static int kills = 0;
         public static int deaths = 0;
@@ -28,12 +28,36 @@ namespace DSTMotivator
 
         static void Main(string[] args)
         {
+            setupMenu();
             setupMessages();
+            setupRewards();
 
             CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
             Game.OnGameStart += Game_OnGameStart;
             Game.OnGameNotifyEvent += Game_OnGameNotifyEvent;
             Game.OnGameUpdate += Game_OnGameUpdate;
+        }
+
+        static void setupMenu()
+        {
+            Settings = new Menu("DSTMotivator", "DSTMotivator", true);
+            Settings.AddItem(new MenuItem("sayGreeting", "Say Greeting").SetValue(true));
+            Settings.AddItem(new MenuItem("sayGreetingAllChat", "Say Greeting In All Chat").SetValue(true));
+            Settings.AddItem(new MenuItem("sayGreetingDelayMin", "Min Greeting Delay").SetValue(new Slider(30, 1, 150)));
+            Settings.AddItem(new MenuItem("sayGreetingDelayMax", "Max Greeting Delay").SetValue(new Slider(90, 1, 150)));
+            Settings.AddItem(new MenuItem("sayCongratulate", "Congratulate players").SetValue(true));
+            Settings.AddItem(new MenuItem("sayCongratulateDelayMin", "Min Congratulate Delay").SetValue(new Slider(5, 1, 30)));
+            Settings.AddItem(new MenuItem("sayCongratulateDelayMax", "Max Congratulate Delay").SetValue(new Slider(15, 1, 30)));
+            Settings.AddToMainMenu();
+        }
+
+        static void setupRewards()
+        {
+            Rewards = new Dictionary<GameEventId, int>
+            {
+                { GameEventId.OnChampionDie, 1 },  // champion kill
+                { GameEventId.OnTurretDamage, 1 }, // turret kill
+            };
         }
 
         static void setupMessages()
@@ -75,6 +99,16 @@ namespace DSTMotivator
                 " :P", " :p",
                 " :O", " :o"
             };
+
+            Greetings = new List<string>
+            {
+                "gl", "good luck",
+                "hf", "have fun",
+                "gl hf", "gl and hf", "gl & hf",
+                "Good Luck, Have Fun",
+                "Let's all have a nice game!",
+                "Good Luck & Have Fun"
+            };
         }
 
         static string getRandomElement( List<string> collection, bool firstEmpty = true )
@@ -96,16 +130,29 @@ namespace DSTMotivator
 
         static string generateGreeting()
         {
-            List<string> Greetings = new List<string>
-            {
-                "gl", "good luck",
-                "hf", "have fun",
-                "gl hf", "gl and hf", "gl & hf",
-            };
-
             string greeting = getRandomElement(Greetings, false);
             greeting += getRandomElement(Smileys);
             return greeting;
+        }
+
+        static void sayCongratulations()
+        {
+            if (Settings.Item("sayCongratulate").GetValue<bool>())
+            {
+                Game.Say(generateMessage());
+            }
+        }
+
+        static void sayGreeting()
+        {
+            if( Settings.Item("sayGreetingAllChat").GetValue<bool>() )
+            {
+                Game.Say("/all " + generateGreeting());
+            }
+            else
+            {
+                Game.Say(generateGreeting());
+            }
         }
 
         static void Game_OnGameLoad(EventArgs args)
@@ -116,61 +163,54 @@ namespace DSTMotivator
 
         static void Game_OnGameStart(EventArgs args)
         {
-            greetingTime = Game.Time + rand.Next(30, 90);
-            gameStarted = true;
+            if( !Settings.Item("sayGreeting").GetValue<bool>() )
+            {
+                return;
+            }
+
+            int minDelay = Settings.Item("sayGreetingDelayMin").GetValue<Slider>().Value;
+            int maxDelay = Settings.Item("sayGreetingDelayMax").GetValue<Slider>().Value;
+
+            // greeting message
+            Utility.DelayAction.Add(rand.Next(Math.Min(minDelay, maxDelay), Math.Max(minDelay, maxDelay)) * 1000, sayGreeting);
         }
 
         static void Game_OnGameUpdate(EventArgs args)
         {
-            // greeting message
-            if( gameStarted && !wroteGreeting && greetingTime < Game.Time )
-            {
-                wroteGreeting = true;
-                Game.Say( "/all " + generateGreeting() );
-            }
-
             // champ kill message
-            if( kills > deaths && congratzTime < Game.Time && congratzTime != 0 )
+            if (kills > deaths && congratzTime < Game.Time && congratzTime != 0)
             {
-                kills = 0;
-                deaths = 0;
-                congratzTime = 0;
-                Game.Say( generateMessage() );
-            }
-            else if( kills != deaths && congratzTime < Game.Time )
-            {
+                sayCongratulations();
+
                 kills = 0;
                 deaths = 0;
                 congratzTime = 0;
             }
+            else if (kills != deaths && congratzTime < Game.Time)
+            {
+                kills = 0;
+                deaths = 0;
+                congratzTime = 0;
+            }            
         }
 
         static void Game_OnGameNotifyEvent(GameNotifyEventArgs args)
         {
-            // is it a champion kill
-            if (args.EventId == GameEventId.OnChampionDie)
+            if( Rewards.ContainsKey( args.EventId ) )
             {
                 Obj_AI_Base Killer = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((int)args.NetworkId);
-
-                if ( Killer.IsAlly )
+                
+                if( Killer.IsAlly )
                 {
-                    if ((kills == 0 && !Killer.IsMe ) || kills > 0)
+                    // we will not congratulate ourselves lol :D
+                    if( (kills == 0 && !Killer.IsMe) || kills > 0 )
                     {
-                        kills++;
+                        kills += Rewards[args.EventId];
                     }
                 }
                 else
                 {
-                    deaths++;
-                }
-            }
-            else if (args.EventId == GameEventId.OnTurretDamage) // maybe it is a turret kill?
-            {
-                Obj_AI_Base Killer = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((int)args.NetworkId);
-
-                if ( Killer.IsAlly && !Killer.IsMe )
-                {
-                    kills++; // turret kill worth one champ kill
+                    deaths += Rewards[args.EventId];
                 }
             }
             else
@@ -178,8 +218,10 @@ namespace DSTMotivator
                 return;
             }
 
+            int minDelay = Settings.Item("sayCongratulateDelayMin").GetValue<Slider>().Value;
+            int maxDelay = Settings.Item("sayCongratulateDelayMax").GetValue<Slider>().Value;
      
-            congratzTime = Game.Time + rand.Next(5, 10);
+            congratzTime = Game.Time + rand.Next( Math.Min(minDelay, maxDelay), Math.Max(minDelay, maxDelay) );
         }
     }
 }
