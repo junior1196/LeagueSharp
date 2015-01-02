@@ -154,9 +154,9 @@ namespace DSTMotivator
 
                 Game.PrintChat( "Killer: " + Killer.Name );
 
-                if (Killer.IsAlly)
+                if ( Killer.IsAlly )
                 {
-                    if ((kills == 0 && Killer.NetworkId != Player.NetworkId) || kills > 0)
+                    if ((kills == 0 && Killer.IsMe ) || kills > 0)
                     {
                         kills++;
                     }
@@ -166,12 +166,11 @@ namespace DSTMotivator
                     deaths++;
                 }
             }
-            // maybe it is a turret kill?
-            else if (args.EventId == GameEventId.OnTurretDamage )
+            else if (args.EventId == GameEventId.OnTurretDamage) // maybe it is a turret kill?
             {
                 Obj_AI_Base Killer = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((int)args.NetworkId);
 
-                if (Killer.IsAlly && !Killer.IsMe )
+                if ( Killer.IsAlly && !Killer.IsMe )
                 {
                     kills++; // turret kill worth one champ kill
                 }
@@ -184,7 +183,7 @@ namespace DSTMotivator
      
             congratzTime = Game.Time + rand.Next(5, 10);
 
-            Game.PrintChat("K: " + kills + " D:" + deaths + " T:" + congratzTime);
+            Game.PrintChat("K:" + kills + " D:" + deaths + " T:" + congratzTime);
         }
     }
 }
