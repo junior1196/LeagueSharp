@@ -138,7 +138,7 @@ namespace DSTMotivator
                 congratzTime = 0;
                 Game.Say( generateMessage() );
             }
-            else if( congratzTime != 0 && congratzTime < Game.Time )
+            else if( kills != deaths && congratzTime < Game.Time )
             {
                 kills = 0;
                 deaths = 0;
