@@ -111,6 +111,8 @@ namespace DSTMotivator
         {
             Game.PrintChat("<font color = \"#D6B600\">DST Motivator by Rinnegan</font>");
 
+            Game.PrintChat( Game.Time + "" );
+
             Game.OnGameUpdate += Game_OnGameUpdate;
         }
 
@@ -180,7 +182,7 @@ namespace DSTMotivator
                 return;
             }
 
-            congratzTime = Game.Time + rand.Next(3, 10);
+            congratzTime = Game.Time + rand.Next(5, 10);
         }
     }
 }
