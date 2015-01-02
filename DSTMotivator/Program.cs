@@ -156,7 +156,7 @@ namespace DSTMotivator
 
                 if ( Killer.IsAlly )
                 {
-                    if ((kills == 0 && Killer.IsMe ) || kills > 0)
+                    if ((kills == 0 && !Killer.IsMe ) || kills > 0)
                     {
                         kills++;
                     }
