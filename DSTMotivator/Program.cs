@@ -181,9 +181,10 @@ namespace DSTMotivator
                 return;
             }
 
-            Game.PrintChat( "K: " + kills + " D:" + deaths + " T:" + congratzTime );
-
+     
             congratzTime = Game.Time + rand.Next(5, 10);
+
+            Game.PrintChat("K: " + kills + " D:" + deaths + " T:" + congratzTime);
         }
     }
 }
