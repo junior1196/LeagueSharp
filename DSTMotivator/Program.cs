@@ -30,6 +30,7 @@ namespace DSTMotivator
         {
             setupMessages();
 
+            CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
             Game.OnGameStart += Game_OnGameStart;
             Game.OnGameNotifyEvent += Game_OnGameNotifyEvent;
         }
@@ -106,14 +107,17 @@ namespace DSTMotivator
             return greeting;
         }
 
-        static void Game_OnGameStart(EventArgs args)
+        static void Game_OnGameLoad(EventArgs args)
         {
             Game.PrintChat("<font color = \"#D6B600\">DST Motivator by Rinnegan</font>");
 
-            greetingTime = 30 + (float)rand.NextDouble() * 60;
-            gameStarted = true;
-
             Game.OnGameUpdate += Game_OnGameUpdate;
+        }
+
+        static void Game_OnGameStart(EventArgs args)
+        {
+            greetingTime = (float)(30 + rand.NextDouble() * 60);
+            gameStarted = true;
         }
 
         static void Game_OnGameUpdate(EventArgs args)
@@ -133,16 +137,24 @@ namespace DSTMotivator
                 congratzTime = 0;
                 Game.Say( generateMessage() );
             }
+            else if( congratzTime != 0 && congratzTime < Game.Time )
+            {
+                kills = 0;
+                deaths = 0;
+                congratzTime = 0;
+            }
         }
 
         static void Game_OnGameNotifyEvent(GameNotifyEventArgs args)
         {
             // is it a champion kill
-            if (args.EventId == GameEventId.OnChampionKill)
+            if (args.EventId == GameEventId.OnChampionDie)
             {
                 Obj_AI_Base Killer = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((int)args.NetworkId);
 
-                if (Killer.Team == Player.Team)
+                Game.PrintChat( "Killer: " + Killer.Name );
+
+                if (Killer.IsAlly)
                 {
                     if ((kills == 0 && Killer.NetworkId != Player.NetworkId) || kills > 0)
                     {
@@ -154,32 +166,25 @@ namespace DSTMotivator
                     deaths++;
                 }
             }
+            /*
             // maybe it is a dragon kill?
             else if( args.EventId == GameEventId.OnKillDragon )
             {
                 Obj_AI_Base Killer = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((int)args.NetworkId);
+
+                Game.PrintChat("Dragon: " + Killer.Name);
+
                 if( Killer.IsAlly )
                 {
                     kills++; // dragon kill worth one champ kill
                 }
             }
-            // maybe it is a baron kill?
-            else if (args.EventId == GameEventId.OnKillWorm)
-            {
-                Obj_AI_Base Killer = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((int)args.NetworkId);
-                if (Killer.IsAlly)
-                {
-                    kills += 3; // baron kill worth 3 champ kills
-                }
-                else
-                {
-                    deaths += 2; // 2 bad the enemy got the bron :(
-                }
-            }
+            */
             // maybe it is a turret kill?
-            else if (args.EventId == GameEventId.OnTurretKill )
+            else if (args.EventId == GameEventId.OnTurretDamage )
             {
                 Obj_AI_Base Killer = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((int)args.NetworkId);
+
                 if (Killer.IsAlly)
                 {
                     kills++; // turret kill worth one champ kill
@@ -190,8 +195,7 @@ namespace DSTMotivator
                 return;
             }
 
-            congratzTime = Game.Time + rand.Next(5, 15);
+            congratzTime = Game.Time + rand.Next(3, 10);
         }
-  
     }
 }
