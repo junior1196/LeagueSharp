@@ -152,6 +152,8 @@ namespace DSTMotivator
             {
                 Obj_AI_Base Killer = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((int)args.NetworkId);
 
+                Game.PrintChat( "Killer: " + Killer.Name );
+
                 if (Killer.IsAlly)
                 {
                     if ((kills == 0 && Killer.NetworkId != Player.NetworkId) || kills > 0)
@@ -169,7 +171,7 @@ namespace DSTMotivator
             {
                 Obj_AI_Base Killer = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((int)args.NetworkId);
 
-                if (Killer.IsAlly)
+                if (Killer.IsAlly && !Killer.IsMe )
                 {
                     kills++; // turret kill worth one champ kill
                 }
