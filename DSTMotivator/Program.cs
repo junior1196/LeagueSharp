@@ -33,6 +33,7 @@ namespace DSTMotivator
             CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
             Game.OnGameStart += Game_OnGameStart;
             Game.OnGameNotifyEvent += Game_OnGameNotifyEvent;
+            Game.OnGameUpdate += Game_OnGameUpdate;
         }
 
         static void setupMessages()
@@ -110,10 +111,6 @@ namespace DSTMotivator
         static void Game_OnGameLoad(EventArgs args)
         {
             Game.PrintChat("<font color = \"#D6B600\">DST Motivator by Rinnegan</font>");
-
-            Game.PrintChat( Game.Time + "" );
-
-            Game.OnGameUpdate += Game_OnGameUpdate;
         }
 
 
