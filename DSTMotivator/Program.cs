@@ -116,7 +116,7 @@ namespace DSTMotivator
 
         static void Game_OnGameStart(EventArgs args)
         {
-            greetingTime = (float)(30 + rand.NextDouble() * 60);
+            greetingTime = 30 + rand.Next(60);
             gameStarted = true;
         }
 
@@ -164,20 +164,6 @@ namespace DSTMotivator
                     deaths++;
                 }
             }
-            /*
-            // maybe it is a dragon kill?
-            else if( args.EventId == GameEventId.OnKillDragon )
-            {
-                Obj_AI_Base Killer = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((int)args.NetworkId);
-
-                Game.PrintChat("Dragon: " + Killer.Name);
-
-                if( Killer.IsAlly )
-                {
-                    kills++; // dragon kill worth one champ kill
-                }
-            }
-            */
             // maybe it is a turret kill?
             else if (args.EventId == GameEventId.OnTurretDamage )
             {
