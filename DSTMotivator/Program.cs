@@ -152,8 +152,6 @@ namespace DSTMotivator
             {
                 Obj_AI_Base Killer = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((int)args.NetworkId);
 
-                Game.PrintChat( "Killer: " + Killer.Name );
-
                 if ( Killer.IsAlly )
                 {
                     if ((kills == 0 && !Killer.IsMe ) || kills > 0)
