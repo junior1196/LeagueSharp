@@ -178,7 +178,7 @@ namespace DSTMotivator
         static void Game_OnGameUpdate(EventArgs args)
         {
             // champ kill message
-            if (kills > deaths && congratzTime < Game.Time && congratzTime != 0)
+            if (kills > deaths && congratzTime < Game.ClockTime && congratzTime != 0)
             {
                 sayCongratulations();
 
@@ -186,7 +186,7 @@ namespace DSTMotivator
                 deaths = 0;
                 congratzTime = 0;
             }
-            else if (kills != deaths && congratzTime < Game.Time)
+            else if (kills != deaths && congratzTime < Game.ClockTime)
             {
                 kills = 0;
                 deaths = 0;
@@ -221,7 +221,7 @@ namespace DSTMotivator
             int minDelay = Settings.Item("sayCongratulateDelayMin").GetValue<Slider>().Value;
             int maxDelay = Settings.Item("sayCongratulateDelayMax").GetValue<Slider>().Value;
      
-            congratzTime = Game.Time + rand.Next( Math.Min(minDelay, maxDelay), Math.Max(minDelay, maxDelay) );
+            congratzTime = Game.ClockTime + rand.Next( Math.Min(minDelay, maxDelay), Math.Max(minDelay, maxDelay) );
         }
     }
 }
