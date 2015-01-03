@@ -25,6 +25,7 @@ namespace DSTMotivator
         public static int kills = 0;
         public static int deaths = 0;
         public static float congratzTime = 0;
+        public static float lastMessage = 0;
 
         static void Main(string[] args)
         {
@@ -48,6 +49,7 @@ namespace DSTMotivator
             Settings.AddItem(new MenuItem("sayCongratulate", "Congratulate players").SetValue(true));
             Settings.AddItem(new MenuItem("sayCongratulateDelayMin", "Min Congratulate Delay").SetValue(new Slider(5, 1, 30)));
             Settings.AddItem(new MenuItem("sayCongratulateDelayMax", "Max Congratulate Delay").SetValue(new Slider(15, 1, 30)));
+            Settings.AddItem(new MenuItem("sayCongratulateInterval", "Minimum Interval between messages").SetValue(new Slider(30, 1, 180)));
             Settings.AddToMainMenu();
         }
 
@@ -137,8 +139,9 @@ namespace DSTMotivator
 
         static void sayCongratulations()
         {
-            if (Settings.Item("sayCongratulate").GetValue<bool>())
+            if (Settings.Item("sayCongratulate").GetValue<bool>() && Game.ClockTime > lastMessage + Settings.Item("sayCongratulateInterval").GetValue<Slider>().Value)
             {
+                lastMessage = Game.ClockTime;
                 Game.Say(generateMessage());
             }
         }
