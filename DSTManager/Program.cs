@@ -56,19 +56,12 @@ namespace DSTManager
 
         private static void SetCongratulateTimer()
         {
-            CongratulateTimer = Game.ClockTime + GenerateDelay("congratulateRandMin", "congratulateRandMax");
-
-            // debug
-            Game.PrintChat("CongratulateTimer: " + (int)(CongratulateTimer / 60) + ":" + (CongratulateTimer % 60));
-
+            CongratulateTimer = Game.Time + GenerateDelay("congratulateRandMin", "congratulateRandMax");
         }
 
         private static void SetApologizeTimer()
         {
-            ApologizeTimer = Game.ClockTime + GenerateDelay("apologizeRandMin", "apologizeRandMax");
-
-            // debug
-            Game.PrintChat("ApologizeTimer: " + (int)(ApologizeTimer / 60) + ":" + (ApologizeTimer % 60));
+            ApologizeTimer = Game.Time + GenerateDelay("apologizeRandMin", "apologizeRandMax");
         }
 
         private static int GenerateDelay(string minMenuKey, string maxMenuKey)
@@ -102,9 +95,6 @@ namespace DSTManager
             // lets get the killer
             Obj_AI_Base Killer = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((int)args.NetworkId);
 
-            // debug
-            Game.PrintChat("OnTurretKill: " + Killer.Name);
-
             // we dont want minion help
             if (Killer.IsMinion) return;
 
@@ -130,9 +120,6 @@ namespace DSTManager
             // lets get the killer
             Obj_AI_Base Killer = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((int)args.NetworkId);
 
-            // debug
-            Game.PrintChat("OnAssist: " + Killer.Name);
-
             // we dont want minion help
             if (Killer.IsMinion) return;
 
@@ -152,9 +139,6 @@ namespace DSTManager
 
             if (!Dead.IsAlly) return;
 
-            // debug
-            Game.PrintChat("OnDied: " + Dead.Name);
-
             DeadTeammates.Add(Dead);
 
             // we are gonna apologize only for ourselves lol
@@ -168,9 +152,6 @@ namespace DSTManager
         {
             // lets get the killer
             Obj_AI_Base Killer = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((int)args.NetworkId);
-
-            // debug
-            Game.PrintChat("OnKill: " + Killer.Name);
 
             // was it teammate?
             if (Killer.IsAlly)
@@ -231,7 +212,7 @@ namespace DSTManager
 
         private static void CheckCongratulate()
         {
-            if (CongratulateTimer > 0 && CongratulateTimer < Game.ClockTime)
+            if (CongratulateTimer > 0 && CongratulateTimer < Game.Time)
             {
                 if (Kills > Deaths)
                 {
@@ -278,7 +259,7 @@ namespace DSTManager
 
         private static void CheckApologize()
         {
-            if (ApologizeTimer > 0 && ApologizeTimer < Game.ClockTime)
+            if (ApologizeTimer > 0 && ApologizeTimer < Game.Time)
             {
                 if (Kills == 0 && Deaths < 3)
                 {

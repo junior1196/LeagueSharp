@@ -93,10 +93,7 @@ namespace DSTManager
 
         private bool CanSend()
         {
-            // debug
-            Game.PrintChat( "Can Send: " + (int)(this.lastSent / 60) + ":" + (this.lastSent%60)  );
-
-            if (Program.Settings.GetSlider("minDelay") < Game.ClockTime - this.lastSent && lastSent != 0) return false;
+            if (Program.Settings.GetSlider("minDelay") > Game.Time - this.lastSent && lastSent != 0) return false;
 
             return true;
         }
@@ -127,7 +124,7 @@ namespace DSTManager
                 this.GetFormattedString(this.GetRandom( MyAllChatFailurePhrases ))
             );
 
-            lastSent = Game.ClockTime;
+            lastSent = Game.Time;
         }
 
         public void ApologizeForMistakes()
@@ -138,7 +135,7 @@ namespace DSTManager
                 this.GetFormattedString(this.GetRandom(MyFailurePhrases) + " :(", 2)
             );
 
-            lastSent = Game.ClockTime;
+            lastSent = Game.Time;
         }
 
         public void CongratulateTeam(bool plural)
@@ -150,7 +147,7 @@ namespace DSTManager
             );
 
 
-            lastSent = Game.ClockTime;
+            lastSent = Game.Time;
         }
 
         public void MotivateTeam()
@@ -162,7 +159,7 @@ namespace DSTManager
             );
 
 
-            lastSent = Game.ClockTime;
+            lastSent = Game.Time;
         }
 
         public void MotivatePlayer()
@@ -173,7 +170,7 @@ namespace DSTManager
                 this.GetFormattedString(this.GetRandom(TeamFailurePhrases) + " :)", 1)
             );
 
-            lastSent = Game.ClockTime;
+            lastSent = Game.Time;
         }
 
         private void AddReplaceables()
