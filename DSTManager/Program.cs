@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
+using Color = System.Drawing.Color;
+
 
 // load LeagueSharp libraries
 using LeagueSharp;
 using LeagueSharp.Common;
+using SharpDX;
 
 namespace DSTManager
 {
@@ -51,17 +55,29 @@ namespace DSTManager
 
             // finally all the magic will happen here
             Game.OnGameUpdate += Game_OnGameUpdate;
+
+            // on draw for bugging
+            Drawing.OnEndScene += Drawing_OnDraw;
+        }
+
+        private static void Drawing_OnDraw(EventArgs args)
+        {
+            if( Settings.GetBool("debug") )
+            {
+                Drawing.DrawText(100, 100, Color.LightGreen, "Kills: ");
+                Drawing.DrawText(100, 120, Color.LightGreen, "Deaths: ");
+            }
         }
 
 
         private static void SetCongratulateTimer()
         {
-            CongratulateTimer = Game.Time + GenerateDelay("congratulateRandMin", "congratulateRandMax");
+            CongratulateTimer = Game.ClockTime + GenerateDelay("congratulateRandMin", "congratulateRandMax");
         }
 
         private static void SetApologizeTimer()
         {
-            ApologizeTimer = Game.Time + GenerateDelay("apologizeRandMin", "apologizeRandMax");
+            ApologizeTimer = Game.ClockTime + GenerateDelay("apologizeRandMin", "apologizeRandMax");
         }
 
         private static int GenerateDelay(string minMenuKey, string maxMenuKey)
@@ -212,7 +228,7 @@ namespace DSTManager
 
         private static void CheckCongratulate()
         {
-            if (CongratulateTimer > 0 && CongratulateTimer < Game.Time)
+            if (CongratulateTimer > 0 && CongratulateTimer < Game.ClockTime)
             {
                 if (Kills > Deaths)
                 {
@@ -259,7 +275,7 @@ namespace DSTManager
 
         private static void CheckApologize()
         {
-            if (ApologizeTimer > 0 && ApologizeTimer < Game.Time)
+            if (ApologizeTimer > 0 && ApologizeTimer < Game.ClockTime)
             {
                 if (Kills == 0 && Deaths < 3)
                 {

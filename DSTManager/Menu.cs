@@ -35,6 +35,9 @@ namespace DSTManager
             // minimum delay
             Menu.AddItem(new MenuItem("minDelay", "Minimum interval between messages").SetValue<Slider>(new Slider(30, 1, 600)));
 
+            // add debug info
+            Menu.AddItem(new MenuItem("debug", "Debug").SetValue<bool>(true));
+
             // add it to the main menu
             Menu.AddToMainMenu();
 
