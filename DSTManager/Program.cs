@@ -37,14 +37,14 @@ namespace DSTManager
 
         public static void Main(string[] args)
         {
+            // on load we will create our menu
+            CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
+
             // on game Start we will initiate a greeting message
             Game.OnGameStart += Game_OnGameStart;
 
             // on game End we will send a nice GG WP message :)
             Game.OnGameEnd += Game_OnGameEnd;
-
-            // on load we will create our menu
-            CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
 
             // here we will catch all the kills & assists
             Game.OnGameNotifyEvent += Game_OnGameNotifyEvent;
@@ -57,11 +57,18 @@ namespace DSTManager
         private static void SetCongratulateTimer()
         {
             CongratulateTimer = Game.ClockTime + GenerateDelay("congratulateRandMin", "congratulateRandMax");
+
+            // debug
+            Game.PrintChat("CongratulateTimer: " + (int)(CongratulateTimer / 60) + ":" + (CongratulateTimer % 60));
+
         }
 
         private static void SetApologizeTimer()
         {
             ApologizeTimer = Game.ClockTime + GenerateDelay("apologizeRandMin", "apologizeRandMax");
+
+            // debug
+            Game.PrintChat("ApologizeTimer: " + (int)(ApologizeTimer / 60) + ":" + (ApologizeTimer % 60));
         }
 
         private static int GenerateDelay(string minMenuKey, string maxMenuKey)
@@ -95,6 +102,9 @@ namespace DSTManager
             // lets get the killer
             Obj_AI_Base Killer = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((int)args.NetworkId);
 
+            // debug
+            Game.PrintChat("OnTurretKill: " + Killer.Name);
+
             // we dont want minion help
             if (Killer.IsMinion) return;
 
@@ -120,6 +130,9 @@ namespace DSTManager
             // lets get the killer
             Obj_AI_Base Killer = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((int)args.NetworkId);
 
+            // debug
+            Game.PrintChat("OnAssist: " + Killer.Name);
+
             // we dont want minion help
             if (Killer.IsMinion) return;
 
@@ -139,6 +152,9 @@ namespace DSTManager
 
             if (!Dead.IsAlly) return;
 
+            // debug
+            Game.PrintChat("OnDied: " + Dead.Name);
+
             DeadTeammates.Add(Dead);
 
             // we are gonna apologize only for ourselves lol
@@ -152,6 +168,9 @@ namespace DSTManager
         {
             // lets get the killer
             Obj_AI_Base Killer = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((int)args.NetworkId);
+
+            // debug
+            Game.PrintChat("OnKill: " + Killer.Name);
 
             // was it teammate?
             if (Killer.IsAlly)

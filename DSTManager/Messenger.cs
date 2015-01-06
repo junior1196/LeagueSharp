@@ -93,6 +93,9 @@ namespace DSTManager
 
         private bool CanSend()
         {
+            // debug
+            Game.PrintChat( "Can Send: " + (int)(this.lastSent / 60) + ":" + (this.lastSent%60)  );
+
             if (Program.Settings.GetSlider("minDelay") < Game.ClockTime - this.lastSent && lastSent != 0) return false;
 
             return true;
