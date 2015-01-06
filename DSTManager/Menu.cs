@@ -33,7 +33,7 @@ namespace DSTManager
             Menu.AddItem(new MenuItem("apologizeRandMax", "Minimum of rand delay").SetValue<Slider>(new Slider(15, 1, 300)));
 
             // minimum delay
-            Menu.AddItem(new MenuItem("minDelay", "Minimum delay between messages").SetValue<Slider>(new Slider(30, 1, 600)));
+            Menu.AddItem(new MenuItem("minDelay", "Minimum interval between messages").SetValue<Slider>(new Slider(30, 1, 600)));
 
             // add it to the main menu
             Menu.AddToMainMenu();
