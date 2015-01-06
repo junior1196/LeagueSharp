@@ -66,8 +66,8 @@ namespace DSTManager
             {
                 Drawing.DrawText(100, 100, Color.LightGreen, "Kills: " + Kills);
                 Drawing.DrawText(100, 120, Color.LightGreen, "Deaths: " + Deaths);
-                Drawing.DrawText(100, 140, Color.LightGreen, "Killers: " + string.Join(", ", Killers));
-                Drawing.DrawText(100, 160, Color.LightGreen, "Assisters: " + string.Join(", ", Assisters));
+                Drawing.DrawText(100, 140, Color.LightGreen, "Killers: " + string.Join(", ",( from o in Killers select o.Name) ));
+                Drawing.DrawText(100, 160, Color.LightGreen, "Assisters: " + string.Join(", ", (from o in Assisters select o.Name)));
                 Drawing.DrawText(100, 180, Color.LightGreen, "CongratulateTimer: " + CongratulateTimer);
                 Drawing.DrawText(100, 200, Color.LightGreen, "ApologizeTimer: " + ApologizeTimer);
                 Drawing.DrawText(100, 220, Color.LightGreen, "CurrentTime: " + Game.ClockTime);
@@ -238,8 +238,8 @@ namespace DSTManager
                 if (Kills > Deaths)
                 {
                     // lets remove ourself lol
-                    Killers = (List<Obj_AI_Base>)Killers.Where(killer => !killer.IsMe);
-                    Assisters = (List<Obj_AI_Base>)Assisters.Where(killer => !killer.IsMe);
+                    Killers = Killers.Where(killer => !killer.IsMe).ToList<Obj_AI_Base>();
+                    Assisters = Assisters.Where(killer => !killer.IsMe).ToList<Obj_AI_Base>();
 
                     if (Assisters.Count == 0 && Killers.Count == 0)
                     {
