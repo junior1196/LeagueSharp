@@ -186,7 +186,7 @@ namespace DSTManager
 
         private string GetRandom(List<string> Texts, int chanceEmpty = 0)
         {
-            if (chanceEmpty > 0 && Program.Rand.Next(101 - chanceEmpty) == 0)
+            if (chanceEmpty > 0 && Program.Rand.Next(100) < chanceEmpty)
                 return "";
 
             return Texts[Program.Rand.Next(Texts.Count)];
