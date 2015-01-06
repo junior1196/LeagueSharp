@@ -57,15 +57,20 @@ namespace DSTManager
             Game.OnGameUpdate += Game_OnGameUpdate;
 
             // on draw for bugging
-            Drawing.OnEndScene += Drawing_OnDraw;
+            Drawing.OnDraw += Drawing_OnDraw;
         }
 
         private static void Drawing_OnDraw(EventArgs args)
         {
             if( Settings.GetBool("debug") )
             {
-                Drawing.DrawText(100, 100, Color.LightGreen, "Kills: ");
-                Drawing.DrawText(100, 120, Color.LightGreen, "Deaths: ");
+                Drawing.DrawText(100, 100, Color.LightGreen, "Kills: " + Kills);
+                Drawing.DrawText(100, 120, Color.LightGreen, "Deaths: " + Deaths);
+                Drawing.DrawText(100, 140, Color.LightGreen, "Killers: " + string.Join(", ", Killers));
+                Drawing.DrawText(100, 160, Color.LightGreen, "Assisters: " + string.Join(", ", Assisters));
+                Drawing.DrawText(100, 180, Color.LightGreen, "CongratulateTimer: " + CongratulateTimer);
+                Drawing.DrawText(100, 200, Color.LightGreen, "ApologizeTimer: " + ApologizeTimer);
+                Drawing.DrawText(100, 220, Color.LightGreen, "CurrentTime: " + Game.ClockTime);
             }
         }
 
