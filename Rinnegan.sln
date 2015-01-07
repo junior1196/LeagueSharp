@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSTMotivator", "DSTMotivato
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSTManager", "DSTManager\DSTManager.csproj", "{CEC6C838-6FC0-4F58-A602-DB65CDAFD67D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VayneCondemnHelper", "VayneCondemnHelper\VayneCondemnHelper.csproj", "{B595C312-44BA-4F4F-B771-2792D957080A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{CEC6C838-6FC0-4F58-A602-DB65CDAFD67D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEC6C838-6FC0-4F58-A602-DB65CDAFD67D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEC6C838-6FC0-4F58-A602-DB65CDAFD67D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B595C312-44BA-4F4F-B771-2792D957080A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B595C312-44BA-4F4F-B771-2792D957080A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B595C312-44BA-4F4F-B771-2792D957080A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B595C312-44BA-4F4F-B771-2792D957080A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -123,7 +123,7 @@ namespace DSTManager
 
             this.Send(
                 this.GetFormattedString(this.GetRandom( MyAllChatFailurePhrases ))
-            );
+            , true);
 
             lastSent = Game.ClockTime;
         }
