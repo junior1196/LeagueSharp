@@ -60,6 +60,11 @@ namespace DSTManager
             Drawing.OnDraw += Drawing_OnDraw;
         }
 
+        private static void Game_OnGameEnd(EventArgs args)
+        {
+            Messenger.Send("GG WP");
+        }
+
         private static void Drawing_OnDraw(EventArgs args)
         {
             if( Settings.GetBool("debug") )
@@ -88,11 +93,6 @@ namespace DSTManager
         private static int GenerateDelay(string minMenuKey, string maxMenuKey)
         {
             return Rand.Next(Settings.GetSlider(minMenuKey), Settings.GetSlider(maxMenuKey));
-        }
-
-        static void Game_OnGameEnd(GameEndEventArgs args)
-        {
-            Messenger.Send("GG WP");
         }
 
         static void Game_OnGameNotifyEvent(GameNotifyEventArgs args)
