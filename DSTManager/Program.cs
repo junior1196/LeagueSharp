@@ -48,7 +48,7 @@ namespace DSTManager
             Game.OnGameStart += Game_OnGameStart;
 
             // on game End we will send a nice GG WP message :)
-            Game.OnGameEnd += Game_OnGameEnd;
+            CustomEvents.Game.OnGameEnd += Game_OnGameEnd;
 
             // here we will catch all the kills & assists
             Game.OnGameNotifyEvent += Game_OnGameNotifyEvent;
