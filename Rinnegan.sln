@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSTManager", "DSTManager\DS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VayneCondemnHelper", "VayneCondemnHelper\VayneCondemnHelper.csproj", "{B595C312-44BA-4F4F-B771-2792D957080A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hi im gosu", "hi im gosu\hi im gosu\hi im gosu.csproj", "{F1266DFA-8158-492F-AC7A-82DBE48F1B5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B595C312-44BA-4F4F-B771-2792D957080A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B595C312-44BA-4F4F-B771-2792D957080A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B595C312-44BA-4F4F-B771-2792D957080A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1266DFA-8158-492F-AC7A-82DBE48F1B5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1266DFA-8158-492F-AC7A-82DBE48F1B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1266DFA-8158-492F-AC7A-82DBE48F1B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1266DFA-8158-492F-AC7A-82DBE48F1B5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

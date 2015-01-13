@@ -144,7 +144,7 @@ namespace DSTManager
             if (!Program.Settings.GetBool("congratulateTeam") || !this.CanSend()) return;
 
             this.Send(
-                this.GetFormattedString("{B} " + this.GetRandom(CongratulationPhrases) + " {T} :)", (plural ? 2 : 1))
+                this.GetFormattedString(this.GetRandom(CongratulationPhrases) + " {T} :)", (plural ? 2 : 1))
             );
 
 
