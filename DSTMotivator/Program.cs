@@ -85,10 +85,10 @@ namespace DSTMotivator
           Starts = new List<string>
           {
               "",
-              "oh, ", "oh ",
-              "lol vieron eso? ",
+              "oh,", "oh",
+              "lol vieron eso?",
               "Buenaaa ",
-              "ks purooo, "
+              "ks purooo "
           };
 
           Endings = new List<string>
@@ -98,10 +98,10 @@ namespace DSTMotivator
               " dat lagasoo",
               " dale que los garchamos bajo torre", 
               " dale men",
-              " vamoos vamoooos!!"
-              " se nota que ustedes no tienen lag"
-              " rito pls lag"
-              " 6mil de ping"
+              " vamoos vamoooos!!",
+              " se nota que ustedes no tienen lag",
+              " rito pls lag",
+              " 6mil de ping",
           };
 
           Smileys = new List<string>
